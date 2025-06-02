@@ -24,12 +24,14 @@ Note: This library is still under development. API and functionality are subject
 
 Folder Structure
 
+```plaintext
 src/
 ├── config/
 ├── core/
 ├── generators/
 ├── utils/
 └── index.ts
+```
 
 Contributing
 

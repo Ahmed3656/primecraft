@@ -1,4 +1,4 @@
-const importPlugin = require('eslint-plugin-import')
+const importPlugin = require('eslint-plugin-import');
 
 module.exports = [
   {
@@ -22,4 +22,4 @@ module.exports = [
       'import/order': 'warn',
     },
   },
-]
+];
