@@ -1,6 +1,9 @@
-export * from './core';
-export * from './config';
-export * from './generators';
-export * from './utils';
+export {
+  generatePrimeSet,
+  generateStrongPrimes,
+  GenerationOptions,
+  MultiPrimeOptions,
+  PrimeSet,
+} from './generators';
 
-export const version = '0.2.0';
+export const version = '0.2.1';

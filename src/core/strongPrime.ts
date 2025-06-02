@@ -43,7 +43,6 @@ export function areValidRSAPrimes(
   const gap = p > q ? p - q : q - p;
   if (gap < minGap) return false;
 
-  const n = p * q;
   const phi = (p - 1n) * (q - 1n);
 
   if (gcd(COMMON_RSA_EXPONENT, phi) !== 1n) return false;

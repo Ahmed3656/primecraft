@@ -3,6 +3,7 @@ import { randomBytes } from 'crypto';
 /**
  * Type definition for an entropy source that generates a BigInt of given bit length.
  */
+// eslint-disable-next-line no-unused-vars
 export type EntropySource = (bits: number) => bigint;
 
 /**

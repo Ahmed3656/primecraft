@@ -3,7 +3,6 @@ import { EntropySource } from '@/config';
 export type GenerationOptions = {
   bitLength: number;
   count?: number;
-  strategy?: 'strong' | 'safe' | 'balanced';
   minSpacing?: bigint;
   entropy?: EntropySource;
 };

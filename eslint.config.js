@@ -1,22 +1,22 @@
 const importPlugin = require('eslint-plugin-import');
+const js = require('@eslint/js');
 
 module.exports = [
+  js.configs.recommended,
   {
-    files: ['*.js', '*.ts'],
+    files: ['**/*.js', '**/*.ts'],
     languageOptions: {
-      env: {
-        es2021: true,
-        node: true,
-      },
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+      parser: require('@typescript-eslint/parser'),
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...require('globals').node,
+        ...require('globals').es2021,
       },
     },
     plugins: {
       import: importPlugin,
     },
-    extends: ['eslint:recommended', 'prettier'],
     rules: {
       'no-unused-vars': 'warn',
       'import/order': 'warn',

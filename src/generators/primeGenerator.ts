@@ -1,6 +1,6 @@
+import { GenerationOptions } from './types';
 import { generateRandomBits, isStrongPrime, areValidRSAPrimes } from '@/core';
 import { EntropySource, defaultEntropy } from '@/config';
-import { GenerationOptions } from './types';
 import { calculateMaxAttempts } from '@/utils';
 import { getFilterCutoff } from '@/helpers';
 
@@ -26,7 +26,7 @@ export function generateStrongPrime(
       return candidate;
     }
     candidate += 2n;
-    
+
     if (candidate > max) {
       candidate = min + (candidate - max - 2n);
       if (candidate % 2n === 0n) candidate += 1n;
