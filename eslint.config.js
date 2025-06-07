@@ -12,6 +12,7 @@ module.exports = [
       globals: {
         ...require('globals').node,
         ...require('globals').es2021,
+        ...require('globals').jest,
       },
     },
     plugins: {

@@ -3,6 +3,7 @@ import { generateRandomBits, isStrongPrime, areValidRSAPrimes } from '@/core';
 import { EntropySource, defaultEntropy } from '@/config';
 import { calculateMaxAttempts } from '@/utils';
 import { getFilterCutoff } from '@/helpers';
+import { WHEEL } from '@/constants';
 
 /**
  * Generates a single strong prime within specified bit length
@@ -21,16 +22,24 @@ export function generateStrongPrime(
   if (candidate % 2n === 0n) candidate += 1n;
   if (candidate > max) candidate -= 2n;
 
+  let base = candidate - (candidate % 30n);
+  let wheelIndex = 0;
+
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const offset = WHEEL[wheelIndex % WHEEL.length];
+    candidate = base + offset;
+    
+    if (candidate > max) {
+      base = min + ((base + 30n - min) % (max - min));
+      candidate = base + WHEEL[wheelIndex % WHEEL.length];
+    }
+
     if (isStrongPrime(candidate, bitLength, cutoff)) {
       return candidate;
     }
-    candidate += 2n;
 
-    if (candidate > max) {
-      candidate = min + (candidate - max - 2n);
-      if (candidate % 2n === 0n) candidate += 1n;
-    }
+    wheelIndex++;
+    if (wheelIndex % WHEEL.length === 0) base += 30n;
   }
 
   throw new Error(`Failed to generate strong prime after ${maxAttempts} attempts`);

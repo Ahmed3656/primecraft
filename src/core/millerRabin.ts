@@ -1,5 +1,6 @@
 import { getMRRounds } from '@/helpers';
-import { generateRandomBetween, modExp } from '@/utils';
+import { getOptimalWitnesses } from '@/helpers/core/getOptimalWitnesses';
+import { modExp } from '@/utils';
 
 /**
  * Miller-Rabin primality test
@@ -16,9 +17,11 @@ export function isProbablyPrime(n: bigint, bitLength: number): boolean {
   }
 
   const k = getMRRounds(bitLength);
+  const witnesses = getOptimalWitnesses(bitLength);
 
-  for (let i = 0; i < k; i++) {
-    const a = 2n + generateRandomBetween(1n, n - 3n);
+  for (const a of witnesses.slice(0, k)) {
+    if (a >= n) continue;
+    
     let x = modExp(a, d, n);
     if (x === 1n || x === n - 1n) continue;
 
@@ -31,9 +34,8 @@ export function isProbablyPrime(n: bigint, bitLength: number): boolean {
       }
     }
 
-    if (continueLoop) continue;
-    return false; // Composite
+    if (!continueLoop) return false;
   }
 
-  return true; // Probably prime
+  return true;
 }

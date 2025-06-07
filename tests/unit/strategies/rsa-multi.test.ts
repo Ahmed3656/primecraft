@@ -18,10 +18,10 @@ describe('RSA Multi-Prime Strategy', () => {
 
   test('generates correct number of primes', () => {
     const result = generateRSAMultiPrimes(baseOptions, 0);
-    // console.log(
-    //   'Generated primes:',
-    //   result.primes.map((p) => p.toString())
-    // );
+    console.log(
+      'Generated primes:',
+      result.primes.map((p) => p.toString())
+    );
     // console.log('Strategy used:', result.metadata.strategy);
 
     expect(result.primes).toHaveLength(3);
@@ -47,6 +47,7 @@ describe('RSA Multi-Prime Strategy', () => {
   test('primes are suitable for RSA', () => {
     const result = generateRSAMultiPrimes(baseOptions, 0);
 
+    // eslint-disable-next-line no-unused-vars
     result.primes.forEach((p, i) => {
       // console.log(`Prime[${i}]:`, p.toString(), 'Strong:', isStrongPrime(p, baseOptions.bitLength, cutoff));
       expect(isStrongPrime(p, baseOptions.bitLength, cutoff)).toBe(true);
