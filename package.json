@@ -1,6 +1,6 @@
 {
   "name": "primecraft",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Primecraft: A TypeScript library for generating strong, random prime numbers optimized for cryptography and security applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

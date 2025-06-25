@@ -21,7 +21,7 @@ export function isProbablyPrime(n: bigint, bitLength: number): boolean {
 
   for (const a of witnesses.slice(0, k)) {
     if (a >= n) continue;
-    
+
     let x = modExp(a, d, n);
     if (x === 1n || x === n - 1n) continue;
 

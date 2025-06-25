@@ -1,15 +1,15 @@
 import { generateRSAMultiPrimes } from '@/generators';
-import { MultiPrimeOptions, PrimeSet } from '@/generators/types';
+import { MultiPrimeOptions, PrimeSet } from '@/types/generation';
 
 /**
  * Generates cryptographically strong prime sets for advanced use cases
  */
-export function generatePrimeSet(options: MultiPrimeOptions): PrimeSet {
+export async function generatePrimeSet(options: MultiPrimeOptions): Promise<PrimeSet> {
   let totalAttempts = 0;
 
   switch (options.strategy) {
     case 'rsa-multi':
-      return generateRSAMultiPrimes(options, totalAttempts);
+      return await generateRSAMultiPrimes(options, totalAttempts);
     default:
       throw new Error(`Unknown strategy: ${options.strategy}`);
   }

@@ -1,9 +1,4 @@
-export {
-  generatePrimeSet,
-  generateStrongPrimes,
-  GenerationOptions,
-  MultiPrimeOptions,
-  PrimeSet,
-} from './generators';
+export { generatePrimeSet, generateStrongPrimes, generateRSAPrimePair } from './generators';
+export { GenerationOptions, MultiPrimeOptions, PrimeSet } from './types';
 
-export const version = '0.2.2';
+export const version = '0.2.3';

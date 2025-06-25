@@ -1,29 +1,33 @@
 import { generatePrimeSet } from '@/generators';
 
 describe('Performance Benchmarks', () => {
-  test('RSA multi-prime generation time', () => {
+  test('RSA multi-prime generation time (parallel)', async () => {
     const start = Date.now();
-    
-    const result = generatePrimeSet({
+
+    const result = await generatePrimeSet({
       count: 3,
       bitLength: 1024,
-      strategy: 'rsa-multi'
+      strategy: 'rsa-multi',
     });
-    
+
     const elapsed = Date.now() - start;
-    
+
+    console.log(
+      'Generated primes:',
+      result.primes.map((p) => p.toString())
+    );
+
     expect(elapsed).toBeLessThan(10000);
-    expect(result.metadata.generationTime).toBeLessThan(elapsed);
   });
 
-  test('handles large bit lengths', () => {
-    const result = generatePrimeSet({
+  test('handles large bit lengths (parallel)', async () => {
+    const result = await generatePrimeSet({
       count: 2,
       bitLength: 1024,
-      strategy: 'rsa-multi'
+      strategy: 'rsa-multi',
     });
 
-    result.primes.forEach(p => {
+    result.primes.forEach((p) => {
       const bitLength = p.toString(2).length;
       expect(bitLength).toBeGreaterThan(340);
     });

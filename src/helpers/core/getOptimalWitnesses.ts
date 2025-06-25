@@ -1,4 +1,4 @@
-import { EXTENDED_WITNESSES } from "@/constants";
+import { EXTENDED_WITNESSES } from '@/constants';
 
 export function getOptimalWitnesses(bitLength: number): bigint[] {
   if (bitLength <= 64) return EXTENDED_WITNESSES.slice(0, 2);

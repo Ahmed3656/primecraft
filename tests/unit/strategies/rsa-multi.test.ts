@@ -1,6 +1,6 @@
 import { isStrongPrime } from '@/core';
 import { generateRSAMultiPrimes } from '@/generators';
-import { MultiPrimeOptions } from '@/generators/types';
+import { MultiPrimeOptions } from '@/types/generation';
 import { getFilterCutoff } from '@/helpers';
 
 describe('RSA Multi-Prime Strategy', () => {
@@ -16,8 +16,8 @@ describe('RSA Multi-Prime Strategy', () => {
 
   const cutoff = getFilterCutoff(baseOptions.bitLength);
 
-  test('generates correct number of primes', () => {
-    const result = generateRSAMultiPrimes(baseOptions, 0);
+  test('generates correct number of primes (parallel)', async () => {
+    const result = await generateRSAMultiPrimes(baseOptions, 0);
     console.log(
       'Generated primes:',
       result.primes.map((p) => p.toString())
@@ -28,8 +28,8 @@ describe('RSA Multi-Prime Strategy', () => {
     expect(result.metadata.strategy).toBe('rsa-multi');
   });
 
-  test('respects gap constraints', () => {
-    const result = generateRSAMultiPrimes(baseOptions, 0);
+  test('respects gap constraints (parallel)', async () => {
+    const result = await generateRSAMultiPrimes(baseOptions, 0);
     const primes = result.primes.sort((a, b) => (a < b ? -1 : 1));
 
     // console.log(
@@ -44,8 +44,8 @@ describe('RSA Multi-Prime Strategy', () => {
     }
   });
 
-  test('primes are suitable for RSA', () => {
-    const result = generateRSAMultiPrimes(baseOptions, 0);
+  test('primes are suitable for RSA (parallel)', async () => {
+    const result = await generateRSAMultiPrimes(baseOptions, 0);
 
     // eslint-disable-next-line no-unused-vars
     result.primes.forEach((p, i) => {

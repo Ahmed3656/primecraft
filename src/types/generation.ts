@@ -1,4 +1,14 @@
-import { EntropySource } from '@/config';
+import { EntropySource } from '@/entropy';
+
+export type StrengthLevel = 'weak' | 'good' | 'strong' | 'exceptional';
+
+export type Strategy =
+  | 'rsa-multi'
+  | 'shamir-secret'
+  | 'distributed-key'
+  | 'balanced-set'
+  | 'twin-pairs'
+  | 'sophie-germain-chain';
 
 export type GenerationOptions = {
   bitLength: number;
@@ -10,13 +20,7 @@ export type GenerationOptions = {
 export type MultiPrimeOptions = {
   count: number;
   bitLength: number;
-  strategy:
-    | 'rsa-multi'
-    | 'shamir-secret'
-    | 'distributed-key'
-    | 'balanced-set'
-    | 'twin-pairs'
-    | 'sophie-germain-chain';
+  strategy: Strategy;
   constraints?: {
     minGap?: bigint;
     maxGap?: bigint;
@@ -34,7 +38,7 @@ export type PrimeSet = {
     product: bigint;
     bitLengths: number[];
     relationships: string[];
-    strength: 'weak' | 'good' | 'strong' | 'exceptional';
+    strength: StrengthLevel;
   };
   metadata: {
     attempts: number;

@@ -1,6 +1,9 @@
-import { PrimeSet } from '@/generators/types';
+import { PrimeSet } from '@/types/generation';
 import { analyzeRelationships, assessStrength } from '@/helpers';
 
+/**
+ * Constructs a PrimeSet object with calculated properties and metadata for analysis.
+ */
 export function createPrimeSet(
   primes: bigint[],
   strategy: string,

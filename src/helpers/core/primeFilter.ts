@@ -18,7 +18,8 @@ export function primeFilter(prime: bigint, cutoff: number): boolean {
  */
 export function getFilterCutoff(bitLength: number): number {
   const maxPrimeValue = 2 ** (bitLength / 2);
-  let low = 0, high = SMALL_PRIMES.length;
+  let low = 0,
+    high = SMALL_PRIMES.length;
   while (low < high) {
     const mid = (low + high) >>> 1;
     if (SMALL_PRIMES[mid] <= maxPrimeValue) low = mid + 1;

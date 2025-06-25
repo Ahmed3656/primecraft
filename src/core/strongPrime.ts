@@ -37,7 +37,7 @@ export function areValidRSAPrimes(
   q: bigint,
   bitLength: number,
   cutoff: number,
-  minGap: bigint = getMinRSAGap(bitLength)
+  minGap: bigint = getMinRSAGap(bitLength, 2)
 ): boolean {
   if (!isStrongPrime(p, bitLength, cutoff) || !isStrongPrime(q, bitLength, cutoff)) return false;
 

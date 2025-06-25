@@ -1,4 +1,4 @@
-import { EntropySource, defaultEntropy } from '@/config';
+import { EntropySource, defaultEntropy } from '@/entropy';
 
 /**
  * Generates a random BigInt with a specified bit length using the provided entropy source.

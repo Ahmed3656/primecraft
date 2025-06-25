@@ -1,6 +1,6 @@
 # Primecraft
 
-Primecraft is a high-quality TypeScript library for generating strong cryptographic prime numbers. Designed with security and flexibility in mind, Primecraft makes it easy to dynamically generate large, random, and secure primes for cryptographic applications.
+Primecraft is a high-performance TypeScript library for generating cryptographically strong prime numbers. Built with security and flexibility in mind, Primecraft provides powerful prime generation capabilities for modern cryptographic applications including RSA key generation, distributed cryptography, and advanced mathematical computations.
 
 ## Features
 
@@ -17,51 +17,76 @@ npm install primecraft
 
 ## Usage
 
-### Basic Prime Generation
+### Basic Strong Prime Generation
 
 ```typescript
 import { generateStrongPrimes } from 'primecraft';
 
 // Generate a single 512-bit strong prime
-const primes = generateStrongPrimes({
+const primes = await generateStrongPrimes({
   bitLength: 512,
   count: 1
 });
-console.log(primes[0]);
+console.log('Generated prime:', primes[0]);
 
 // Generate multiple primes with spacing constraints
-const multiplePrimes = generateStrongPrimes({
+const multiplePrimes = await generateStrongPrimes({
   bitLength: 256,
   count: 3,
   minSpacing: 1000n
 });
-console.log(multiplePrimes);
+console.log('Multiple primes:', multiplePrimes);
+```
+
+### RSA Prime Pair Generation
+
+```typescript
+import { generateRSAPrimePair } from 'primecraft';
+
+// Generate a pair of primes suitable for RSA key generation
+const { p, q } = await generateRSAPrimePair(2048);
+console.log('RSA Prime P:', p);
+console.log('RSA Prime Q:', q);
+
+// With custom entropy source
+import { customEntropySource } from './my-entropy';
+const rsaPair = await generateRSAPrimePair(2048, customEntropySource);
 ```
 
 ### Advanced Prime Set Generation
 
 ```typescript
-import { generatePrimeSet } from 'primecraft';
+import { generatePrimeSet, type MultiPrimeOptions } from 'primecraft';
 
 // Generate primes for RSA multi-prime applications
-const primeSet = generatePrimeSet({
+const options: MultiPrimeOptions = {
   count: 4,
   bitLength: 512,
   strategy: 'rsa-multi',
   constraints: {
     minGap: 100n,
-    avoidWeak: true
+    maxGap: 10000n,
+    avoidWeak: true,
+    congruenceClass: {
+      modulus: 12n,
+      remainder: 5n
+    }
   }
-});
+};
+
+const primeSet = await generatePrimeSet(options);
 
 console.log('Generated primes:', primeSet.primes);
-console.log('Prime properties:', primeSet.properties);
-console.log('Generation metadata:', primeSet.metadata);
+console.log('Prime gaps:', primeSet.properties.gaps);
+console.log('Generation time:', primeSet.metadata.generationTime);
+console.log('Strength level:', primeSet.properties.strength);
 ```
 
 ### Available Strategies
 
-The `generatePrimeSet` function supports multiple generation strategies:
+<!-- The `generatePrimeSet` function supports multiple generation strategies: -->
+
+The `generatePrimeSet` function currently only supports:
 
 - `'rsa-multi'` - For RSA multi-prime applications
 <!-- - `'shamir-secret'` - For Shamir's secret sharing
@@ -72,24 +97,68 @@ The `generatePrimeSet` function supports multiple generation strategies:
 
 ## API Reference
 
-### `generateStrongPrimes(options: GenerationOptions): bigint[]`
+### `generateStrongPrimes(options: GenerationOptions): Promise<bigint[]>`
 
 Generates multiple strong primes with specified constraints.
 
 **Options:**
+
 - `bitLength: number` - Bit length of each prime
 - `count?: number` - Number of primes to generate (default: 1)
 - `minSpacing?: bigint` - Minimum spacing between primes
 - `entropy?: EntropySource` - Custom entropy source
 
-### `generatePrimeSet(options: MultiPrimeOptions): PrimeSet`
+**Returns:** Promise resolving to an array of sorted prime numbers
 
-Generates cryptographically strong prime sets for advanced use cases.
+### `generateRSAPrimePair(bitLength: number, entropy?: EntropySource): Promise<{p: bigint, q: bigint}>`
 
-**Returns:** A `PrimeSet` object containing:
+Generates a pair of primes specifically optimized for RSA key generation with proper mathematical validation.
+
+**Parameters:**
+
+- `bitLength: number` - Bit length for each prime in teh pair
+- `entropy?: EntropySource` - Custom entropy source
+
+**Returns:** Promise resolving to an object containing two primes `p` and `q`
+
+### `generatePrimeSet(options: MultiPrimeOptions): Promise<PrimeSet>`
+
+Generates cryptographically strong prime sets for advanced cryptographic applications with comprehensive analysis.
+
+**Parameters:**
+
+- `count`: `number` - Number of primes to generate
+- `bitLength`: `number` - Bit length of each prime
+- `strategy`: `Strategy` - Generation strategy (currently supports 'rsa-multi')
+- `constraints?`: `object` - Optional constraints object with:
+  - `minGap?`: `bigint` - Minimum gap between primes
+  - `maxGap?`: `bigint` - Maximum gap between primes
+  - `productBounds?`: `{min: bigint, max: bigint}` - Bounds for prime product
+  - `congruenceClass?`: `{modulus: bigint, remainder: bigint}` - Congruence constraints
+  - `avoidWeak?`: `boolean` - Avoid mathematically weak primes
+- `entropy?`: `EntropySource` - Custom entropy source
+
+**Returns:** Promise resolving to a PrimeSet object containing:
+
 - `primes: bigint[]` - The generated primes
 - `properties` - Analysis of gaps, product, relationships, and strength
 - `metadata` - Generation statistics and timing
+
+## Performance
+
+Primecraft is designed for high performance with:
+
+- **Multi-threaded Generation:** Utilizes all available CPU cores
+- **Optimized Algorithms:** Advanced prime generation and testing algorithms
+- **Smart Filtering:** Efficient candidate filtering to reduce computation
+- **Parallel Validation:** Concurrent prime validation for faster results
+
+## Security Considerations
+
+- All primes generated meet cryptographic strength requirements
+- Built-in protection against weak prime generation
+- Configurable entropy sources for enhanced randomness
+- Mathematical validation ensures prime suitability for intended use cases
 
 ## Note
 
@@ -100,15 +169,22 @@ This library is still under development. API and functionality are subject to ch
 ```plaintext
 project-root/
 ├── src/
-│   ├── config/
 │   ├── constants/
 │   ├── core/
 │   ├── generators/
+│   │   └── strategies/
+│   ├── entropy/
 │   ├── helpers/
+│   ├── types/
 │   ├── utils/
 │   └── index.ts
 └── tests/
+    ├── integration/
+    ├── performance/
     └── unit/
+        ├── types/
+        ├── utils/
+        └── index.ts
 ```
 
 <!-- ## Contributing

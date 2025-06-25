@@ -1,4 +1,4 @@
 export * from './strategies';
-export * from './generatePrimeSet';
-export * from './primeGenerator';
-export * from './types';
+export * from './primeSet';
+export * from './strongPrimes';
+export * from './worker';
