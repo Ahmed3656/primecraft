@@ -5,6 +5,7 @@ Primecraft is a high-performance TypeScript library for generating cryptographic
 ## Features
 
 - Strong, cryptographically safe prime generation
+- Normal prime generation for general use cases
 - Support for generating multiple primes that work well together
 - Built-in randomness with safe alternators
 - Clean, well-structured TypeScript codebase
@@ -16,6 +17,25 @@ npm install primecraft
 ```
 
 ## Usage
+
+### Basic Prime Generation
+
+```typescript
+import { generateNormalPrime, generateNormalPrimeBatch } from 'primecraft';
+
+// Generate a single 512-bit normal prime
+const prime = await generateNormalPrime(512);
+console.log('Generated prime:', prime);
+
+// Generate multiple normal primes with spacing constraints
+const options = {
+  bitLength: 256,
+  count: 3,
+  minSpacing: 1000n
+};
+const multiplePrimes = await generateNormalPrimeBatch(options);
+console.log('Multiple primes:', multiplePrimes);
+```
 
 ### Basic Strong Prime Generation
 
@@ -96,6 +116,31 @@ The `generatePrimeSet` function currently only supports:
 - `'sophie-germain-chain'` - For Sophie Germain prime chains -->
 
 ## API Reference
+
+### `generateNormalPrime(bitLength: number, entropy?: EntropySource, maxAttempts?: number): Promise<bigint>`
+
+Generates a single random probable prime of the specified bit length.
+
+**Parameters:**
+
+- `bitLength: number` - Bit length of the prime to generate
+- `entropy?: EntropySource` - Custom entropy source
+- `maxAttempts?: number` - Maximum generation attempts (defaults to calculated value)
+
+**Returns:** Promise resolving to a prime number
+
+### `generateNormalPrimeBatch(options: GenerationOptions): Promise<bigint[]>`
+
+Generates a batch of unique probable primes with optional spacing constraints.
+
+**Options:**
+
+- `bitLength: number` - Bit length of each prime
+- `count?: number` - Number of primes to generate (default: 1)
+- `minSpacing?: bigint` - Minimum spacing between primes (default: 1000n)
+- `entropy?: EntropySource` - Custom entropy source
+
+**Returns:** Promise resolving to an array of sorted prime numbers
 
 ### `generateStrongPrimes(options: GenerationOptions): Promise<bigint[]>`
 
@@ -182,9 +227,9 @@ project-root/
     ├── integration/
     ├── performance/
     └── unit/
-        ├── types/
-        ├── utils/
-        └── index.ts
+        ├── core/
+        ├── strategies/
+        └── utils/
 ```
 
 <!-- ## Contributing

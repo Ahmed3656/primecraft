@@ -1,6 +1,6 @@
 import { gcd } from '@/utils';
 import { COMMON_RSA_EXPONENT } from '@/constants';
-import { getMinRSAGap, primeFilter } from '@/helpers';
+import { getMinRSAGap } from '@/helpers';
 import { isProbablyPrime } from '@/core';
 
 /**
@@ -13,10 +13,8 @@ import { isProbablyPrime } from '@/core';
 export function isStrongPrime(
   n: bigint,
   bitLength: number,
-  cutoff: number,
   exponent: bigint = COMMON_RSA_EXPONENT
 ): boolean {
-  if (!primeFilter(n, cutoff)) return false;
   if (n % exponent === 1n) return false;
   if (n % 3n === 1n) return false;
 
@@ -36,10 +34,9 @@ export function areValidRSAPrimes(
   p: bigint,
   q: bigint,
   bitLength: number,
-  cutoff: number,
   minGap: bigint = getMinRSAGap(bitLength, 2)
 ): boolean {
-  if (!isStrongPrime(p, bitLength, cutoff) || !isStrongPrime(q, bitLength, cutoff)) return false;
+  if (!isStrongPrime(p, bitLength) || !isStrongPrime(q, bitLength)) return false;
 
   const gap = p > q ? p - q : q - p;
   if (gap < minGap) return false;

@@ -12,7 +12,7 @@ export async function generateStrongPrimes(options: GenerationOptions): Promise<
   const { bitLength, count = 1, minSpacing = 1000n, entropy = defaultEntropy } = options;
   const cutoff = getFilterCutoff(bitLength);
   const maxAttempts = calculateMaxAttempts(bitLength);
-  const workers = Math.min(count * 2, os.cpus().length || 4);
+  const workers = os.cpus().length || 4;
 
   const primes: bigint[] = [];
 
@@ -20,7 +20,7 @@ export async function generateStrongPrimes(options: GenerationOptions): Promise<
     const promises = Array(workers)
       .fill(null)
       .map(() =>
-        generatePrimeWorker(bitLength, cutoff, entropy, Math.floor(maxAttempts / workers))
+        generatePrimeWorker(bitLength, cutoff, entropy, Math.floor(maxAttempts / workers), true)
       );
 
     const candidates = await Promise.allSettled(promises);

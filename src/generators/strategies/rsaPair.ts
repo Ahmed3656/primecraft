@@ -19,7 +19,7 @@ export async function generateRSAPrimePair(
   for (let round = 0; round < Math.ceil(maxAttempts / workers); round++) {
     const promises = Array(workers)
       .fill(null)
-      .map(() => generatePrimeWorker(bitLength, cutoff, entropy, workers));
+      .map(() => generatePrimeWorker(bitLength, cutoff, entropy, workers, true));
 
     const candidates = await Promise.allSettled(promises);
     const validPrimes = candidates
@@ -29,7 +29,7 @@ export async function generateRSAPrimePair(
     for (let i = 0; i < validPrimes.length; i++) {
       for (let j = i + 1; j < validPrimes.length; j++) {
         const [p, q] = [validPrimes[i], validPrimes[j]];
-        if (areValidRSAPrimes(p, q, bitLength, cutoff)) {
+        if (areValidRSAPrimes(p, q, bitLength)) {
           return { p, q };
         }
       }

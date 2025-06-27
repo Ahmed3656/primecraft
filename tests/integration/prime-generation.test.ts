@@ -7,7 +7,7 @@ import {
   generateRSAMultiPrimes,
 } from '@/generators';
 import { MultiPrimeOptions } from '@/types';
-import { getFilterCutoff, getMinRSAGap } from '@/helpers';
+import { getMinRSAGap } from '@/helpers';
 import { COMMON_RSA_EXPONENT, WHEEL_30 } from '@/constants';
 import { gcd } from '@/utils';
 
@@ -64,11 +64,9 @@ describe('Prime Generation - Comprehensive Tests', () => {
         entropy: defaultEntropy,
       });
 
-      const cutoff = getFilterCutoff(256);
-
       primes.forEach((prime) => {
         // Must be strong
-        expect(isStrongPrime(prime, 256, cutoff)).toBe(true);
+        expect(isStrongPrime(prime, 256)).toBe(true);
 
         // Must be odd
         expect(prime % 2n).toBe(1n);
@@ -122,9 +120,8 @@ describe('Prime Generation - Comprehensive Tests', () => {
       expect(uniquePrimes.size).toBe(allPrimes.length);
 
       // All should be strong
-      const cutoff = getFilterCutoff(64);
       allPrimes.forEach((prime) => {
-        expect(isStrongPrime(prime, 64, cutoff)).toBe(true);
+        expect(isStrongPrime(prime, 64)).toBe(true);
       });
     });
   });
@@ -135,14 +132,13 @@ describe('Prime Generation - Comprehensive Tests', () => {
 
       for (const bitLength of bitLengths) {
         const { p, q } = await generateRSAPrimePair(bitLength, defaultEntropy);
-        const cutoff = getFilterCutoff(bitLength);
 
         // Both should be strong primes
-        expect(isStrongPrime(p, bitLength, cutoff)).toBe(true);
-        expect(isStrongPrime(q, bitLength, cutoff)).toBe(true);
+        expect(isStrongPrime(p, bitLength)).toBe(true);
+        expect(isStrongPrime(q, bitLength)).toBe(true);
 
         // Should be valid for RSA
-        expect(areValidRSAPrimes(p, q, bitLength, cutoff)).toBe(true);
+        expect(areValidRSAPrimes(p, q, bitLength)).toBe(true);
 
         // Should be different
         expect(p).not.toBe(q);
@@ -302,9 +298,8 @@ describe('Prime Generation - Comprehensive Tests', () => {
       expect(result.metadata.strategy).toBe('rsa-multi');
 
       // Should have same quality as direct call
-      const cutoff = getFilterCutoff(128); // Per-prime bit length
       result.primes.forEach((prime) => {
-        expect(isStrongPrime(prime, 128, cutoff)).toBe(true);
+        expect(isStrongPrime(prime, 128)).toBe(true);
       });
     });
 
@@ -351,10 +346,9 @@ describe('Prime Generation - Comprehensive Tests', () => {
       expect(largeBatch).toHaveLength(100);
 
       // Spot check quality
-      const cutoff = getFilterCutoff(32);
       const sampleIndices = [0, 25, 50, 75, 99];
       sampleIndices.forEach((i) => {
-        expect(isStrongPrime(largeBatch[i], 32, cutoff)).toBe(true);
+        expect(isStrongPrime(largeBatch[i], 32)).toBe(true);
       });
     });
 

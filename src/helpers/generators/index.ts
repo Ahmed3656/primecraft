@@ -5,3 +5,4 @@ export * from './calculateAverageGap';
 export * from './checkArithmeticProgression';
 export * from './checkWeakGCDPatterns';
 export * from './createPrimeSet';
+export * from './normalizeCandidate';

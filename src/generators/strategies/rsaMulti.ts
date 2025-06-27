@@ -20,7 +20,7 @@ export async function generateRSAMultiPrimes(
   const targetBitLength = Math.floor(bitLength / count);
   const cutoff = getFilterCutoff(targetBitLength);
   const maxAttempts = calculateMaxAttempts(targetBitLength);
-  const workers = Math.min(count * 3, os.cpus.length || 4);
+  const workers = os.cpus.length || 4;
 
   while (primes.length < count) {
     attempts++;
@@ -28,7 +28,13 @@ export async function generateRSAMultiPrimes(
     const promises = Array(workers)
       .fill(null)
       .map(() =>
-        generatePrimeWorker(targetBitLength, cutoff, entropy, Math.floor(maxAttempts / workers))
+        generatePrimeWorker(
+          targetBitLength,
+          cutoff,
+          entropy,
+          Math.floor(maxAttempts / workers),
+          true
+        )
       );
 
     const results = await Promise.allSettled(promises);

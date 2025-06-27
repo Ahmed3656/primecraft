@@ -6,7 +6,6 @@ import {
   calculateAverageGap,
   checkArithmeticProgression,
   checkWeakGCDPatterns,
-  getFilterCutoff,
 } from '@/helpers';
 
 /**
@@ -26,7 +25,6 @@ export function assessStrength(primes: bigint[]): StrengthLevel {
   const bitLengths = primes.map((p) => p.toString(2).length);
   const minBits = Math.min(...bitLengths);
   const maxBits = Math.max(...bitLengths);
-  const cutoff = getFilterCutoff(minBits);
 
   // Check for obvious weaknesses
   if (minBits < 128) return 'weak';
@@ -35,7 +33,7 @@ export function assessStrength(primes: bigint[]): StrengthLevel {
 
   // Count strong primes (fixed function call)
   const strongCount = primes.filter((p) =>
-    isStrongPrime(p, p.toString(2).length, cutoff, COMMON_RSA_EXPONENT)
+    isStrongPrime(p, p.toString(2).length, COMMON_RSA_EXPONENT)
   ).length;
   const strongRatio = strongCount / primes.length;
 

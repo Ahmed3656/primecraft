@@ -1,7 +1,6 @@
 import { isStrongPrime } from '@/core';
 import { generateRSAMultiPrimes } from '@/generators';
 import { MultiPrimeOptions } from '@/types/generation';
-import { getFilterCutoff } from '@/helpers';
 
 describe('RSA Multi-Prime Strategy', () => {
   const baseOptions: MultiPrimeOptions = {
@@ -13,8 +12,6 @@ describe('RSA Multi-Prime Strategy', () => {
       avoidWeak: true,
     },
   };
-
-  const cutoff = getFilterCutoff(baseOptions.bitLength);
 
   test('generates correct number of primes (parallel)', async () => {
     const result = await generateRSAMultiPrimes(baseOptions, 0);
@@ -50,7 +47,7 @@ describe('RSA Multi-Prime Strategy', () => {
     // eslint-disable-next-line no-unused-vars
     result.primes.forEach((p, i) => {
       // console.log(`Prime[${i}]:`, p.toString(), 'Strong:', isStrongPrime(p, baseOptions.bitLength, cutoff));
-      expect(isStrongPrime(p, baseOptions.bitLength, cutoff)).toBe(true);
+      expect(isStrongPrime(p, baseOptions.bitLength)).toBe(true);
     });
 
     // console.log('Prime product:', result.properties.product.toString());

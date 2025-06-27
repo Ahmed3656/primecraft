@@ -1,12 +1,10 @@
 import { isStrongPrime } from '@/core';
 import { defaultEntropy } from '@/entropy';
 import { generateStrongPrimes } from '@/generators';
-import { getFilterCutoff } from '@/helpers';
 
 describe('Core Prime Generation', () => {
   test('generates prime of correct bit length (parallel)', async () => {
     const bitLength = 128;
-    const cutoff = getFilterCutoff(bitLength);
     const primes = await generateStrongPrimes({
       bitLength,
       count: 1,
@@ -17,7 +15,7 @@ describe('Core Prime Generation', () => {
 
     expect(prime).toBeGreaterThan(2n ** 127n); // At least 128 bits
     expect(prime).toBeLessThan(2n ** 128n); // Not more than 128 bits
-    expect(isStrongPrime(prime, bitLength, cutoff)).toBe(true);
+    expect(isStrongPrime(prime, bitLength)).toBe(true);
   });
 
   test('generates different primes each time (parallel)', async () => {
