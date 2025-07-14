@@ -1,14 +1,15 @@
 {
   "name": "primecraft",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Primecraft: A TypeScript library for generating strong, random prime numbers optimized for cryptography and security applications.",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "prepare": "husky install",
     "start": "node dist/index.js",
-    "build": "tsup src/index.ts --dts --format esm,cjs",
-    "dev": "tsup src/index.ts --watch",
+    "build": "tsup && tsc-alias -p tsconfig.json",
+    "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch",
     "lint": "eslint src",
@@ -40,6 +41,7 @@
     "lint-staged": "^16.1.0",
     "prettier": "^3.5.3",
     "ts-jest": "^29.3.4",
+    "tsc-alias": "^1.8.16",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3"
   },

@@ -1,5 +1,6 @@
-import { PrimeSet } from '@/types/generation';
 import { analyzeRelationships, assessStrength } from '@/helpers';
+import { PrimeSet } from '@/types';
+import { absBigInt } from '@/utils';
 
 /**
  * Constructs a PrimeSet object with calculated properties and metadata for analysis.
@@ -10,7 +11,7 @@ export function createPrimeSet(
   attempts: number,
   startTime: number
 ): PrimeSet {
-  const gaps = primes.slice(1).map((p, i) => p - primes[i]);
+  const gaps = primes.slice(1).map((p, i) => absBigInt(p - primes[i]));
   const product = primes.reduce((acc, p) => acc * p, 1n);
   const bitLengths = primes.map((p) => p.toString(2).length);
 

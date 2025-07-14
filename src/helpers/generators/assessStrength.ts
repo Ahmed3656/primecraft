@@ -40,10 +40,6 @@ export function assessStrength(primes: bigint[]): StrengthLevel {
   const { uniformity, clustering } = analyzeDistribution(primes);
   if (clustering) return 'weak';
 
-  const avgGap = calculateAverageGap(primes);
-  const expectedGap = 2n ** BigInt(Math.floor(minBits / 2));
-  const gapRatio = Number(avgGap) / Number(expectedGap);
-
   // Strength assessment based on multiple criteria
   let score = 0;
 
@@ -62,8 +58,16 @@ export function assessStrength(primes: bigint[]): StrengthLevel {
   else if (uniformity >= 0.6) score += 1;
 
   // Gap scoring
-  if (gapRatio >= 1.0) score += 2;
-  else if (gapRatio >= 0.5) score += 1;
+  let gapScore = 2; // Default pass for large primes
+  // Small primes (<256 bits) - Check uniformity
+  if (minBits < 256) {
+    const avgGap = calculateAverageGap(primes);
+    const expectedGap = 2n ** BigInt(Math.floor(minBits / 2));
+    const gapRatio = Number(avgGap) / Number(expectedGap);
+
+    gapScore = gapRatio < 0.3 ? 0 : gapRatio < 0.5 ? 1 : 2;
+  }
+  score += gapScore;
 
   // Size consistency scoring
   const bitSpread = maxBits - minBits;

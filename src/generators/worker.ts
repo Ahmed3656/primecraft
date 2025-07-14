@@ -17,7 +17,6 @@ export async function generatePrimeWorker(
   const { wheel, modulus } = getWheel(bitLength);
 
   let candidate = normalizeCandidate(generateRandomBits(bitLength, entropy), min, max);
-
   let base = candidate - (candidate % modulus);
   let wheelIndex = 0;
 

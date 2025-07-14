@@ -1,7 +1,8 @@
 import { EntropySource, defaultEntropy } from '@/entropy';
-import { getFilterCutoff } from '@/helpers';
-import { calculateMaxAttempts } from '@/utils';
 import { generatePrimeWorker } from '@/generators';
+import { getFilterCutoff } from '@/helpers';
+import { logger } from '@/logger';
+import { calculateMaxAttempts } from '@/utils';
 
 /**
  * Internal function for generating a probable prime with custom parameters.
@@ -13,7 +14,15 @@ export async function generateNormalPrimeInternal(
   entropy: EntropySource = defaultEntropy,
   maxAttempts: number = calculateMaxAttempts(bitLength)
 ): Promise<bigint> {
-  return generatePrimeWorker(bitLength, cutoff, entropy, maxAttempts, false);
+  try {
+    return generatePrimeWorker(bitLength, cutoff, entropy, maxAttempts, false);
+  } catch (error) {
+    logger.verbose(`Internal prime generation failed: ${(error as Error).message}`, {
+      bitLength,
+      maxAttempts,
+    });
+    throw error;
+  }
 }
 
 /**
@@ -24,6 +33,27 @@ export async function generateNormalPrime(
   entropy: EntropySource = defaultEntropy,
   maxAttempts: number = calculateMaxAttempts(bitLength)
 ): Promise<bigint> {
-  const cutoff = getFilterCutoff(bitLength);
-  return generateNormalPrimeInternal(bitLength, cutoff, entropy, maxAttempts);
+  const id = `normal-${Date.now()}`;
+
+  logger.startOperation(id, {
+    operation: 'Generating normal prime',
+    bitLength,
+    count: 1,
+  });
+
+  try {
+    const cutoff = getFilterCutoff(bitLength);
+    const result = await generateNormalPrimeInternal(bitLength, cutoff, entropy, maxAttempts);
+
+    logger.success(id, { generated: 1, requested: 1 });
+
+    return result;
+  } catch (error) {
+    logger.error(id, error as Error, {
+      operation: 'Generate normal prime',
+      bitLength,
+      count: 1,
+    });
+    throw error;
+  }
 }

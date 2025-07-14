@@ -42,9 +42,9 @@ console.log('Multiple primes:', multiplePrimes);
 ```typescript
 import { generateStrongPrimes } from 'primecraft';
 
-// Generate a single 512-bit strong prime
+// Generate a single 256-bit strong prime
 const primes = await generateStrongPrimes({
-  bitLength: 512,
+  bitLength: 256,
   count: 1
 });
 console.log('Generated prime:', primes[0]);
@@ -68,9 +68,11 @@ const { p, q } = await generateRSAPrimePair(2048);
 console.log('RSA Prime P:', p);
 console.log('RSA Prime Q:', q);
 
-// With custom entropy source
-import { customEntropySource } from './my-entropy';
-const rsaPair = await generateRSAPrimePair(2048, customEntropySource);
+// Optional: Use your own custom entropy source
+import { yourEntropySource } from './your-entropy'; // Must be of type EntropySource
+
+const customEntropy: EntropySource = yourEntropySource;
+const rsaPair = await generateRSAPrimePair(2048, customEntropy);
 ```
 
 ### Advanced Prime Set Generation
@@ -220,6 +222,7 @@ project-root/
 │   │   └── strategies/
 │   ├── entropy/
 │   ├── helpers/
+│   ├── logger/
 │   ├── types/
 │   ├── utils/
 │   └── index.ts

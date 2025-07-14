@@ -1,3 +1,4 @@
+export * from './logger';
 export * from './millerRabin';
 export * from './wheel';
 export * from './primes';

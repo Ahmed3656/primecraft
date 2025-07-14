@@ -1,3 +1,4 @@
+export { EntropySource } from './entropy';
 export {
   generateNormalPrime,
   generateNormalPrimeBatch,
@@ -7,4 +8,4 @@ export {
 } from './generators';
 export { GenerationOptions, MultiPrimeOptions, PrimeSet } from './types';
 
-export const version = '0.3.0';
+export const version = '0.3.1';
