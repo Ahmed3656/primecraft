@@ -16,6 +16,40 @@ Primecraft is a high-performance TypeScript library for generating cryptographic
 npm install primecraft
 ```
 
+## Setup
+
+To use Primecraft correctly in a TypeScript + ESM environment, make sure your project is configured as follows:
+
+### 1. `tsconfig.json` settings:
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ES2022",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true
+  }
+}
+```
+
+### 2. Add the following to your `package.json`:
+```json
+{
+  "type": "module"
+}
+```
+
+### 3. Building the project:
+Use the TypeScript compiler to build with compatible flags:
+```bash
+tsc --target ES2020 --module ES2022 --moduleResolution Node your-entry.ts
+```
+Or if your `tsconfig.json` is already configured:
+```bash
+tsc
+```
+
 ## Usage
 
 ### Basic Prime Generation

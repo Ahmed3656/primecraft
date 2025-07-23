@@ -8,4 +8,4 @@ export {
 } from './generators';
 export { GenerationOptions, MultiPrimeOptions, PrimeSet } from './types';
 
-export const version = '0.3.1';
+export const version = '0.3.2';
